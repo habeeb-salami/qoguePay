@@ -1,0 +1,15 @@
+language: node_js
+sudo: required
+dist: trusty
+node_js:
+  - "stable"
+cache:
+  directories:
+    - "node_modules"
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - psql -U postgres -c 'CREATE DATABASE "Teamwork";'
+  - psql -U postgres -f ./models/db.sql -d Teamwork
+  - node test/db/init.js
